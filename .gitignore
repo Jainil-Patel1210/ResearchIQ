@@ -1,0 +1,25 @@
+# Python virtual environment
+.venv/
+
+# Python bytecode/cache
+__pycache__/
+*.pyc
+
+# Environment variables / secrets (API keys)
+.env
+
+# Editor/OS cruft
+.DS_Store
+
+# Data corpus (raw papers, parsed output, vector DB, manifest)
+data/
+
+# Planning docs (local working docs, not part of the shared repo)
+CLAUDE.md
+plan.md
+temp.txt
+
+# Corpus acquisition script (paired with the local-only data/ above)
+scripts/fetch_corpus.py
+
+.early.coverage

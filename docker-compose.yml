@@ -1,0 +1,8 @@
+services:
+  grobid:
+    image: grobid/grobid:0.9.1-crf
+    ports:
+      - "8070:8070"
+    environment:
+      - JAVA_OPTS=-Xmx3g
+    mem_limit: 4g
