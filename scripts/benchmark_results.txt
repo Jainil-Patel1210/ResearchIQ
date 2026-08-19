@@ -1,0 +1,48 @@
+=== 2026-08-19T18:09:42 ===
+model: all-MiniLM-L6-v2
+
+load time: 7.31s
+RSS before load: 440 MB
+RSS after load:  465 MB  (+25 MB)
+
+embedding 135 real chunks...
+embed time: 5.63s (41.7 ms/chunk)
+embedding dimension: 384
+RSS after embedding all chunks: 643 MB (+178 MB over model load)
+
+query vs relevant (multi-head attention) chunk:   0.3719
+query vs irrelevant (BERT masking) chunk:          0.1979
+margin (higher is better discrimination):          0.1740
+
+=== 2026-08-19T18:10:53 ===
+model: BAAI/bge-base-en-v1.5
+
+load time: 150.43s
+RSS before load: 439 MB
+RSS after load:  256 MB  (+-184 MB)
+
+embedding 135 real chunks...
+embed time: 77.69s (575.4 ms/chunk)
+embedding dimension: 768
+RSS after embedding all chunks: 406 MB (+150 MB over model load)
+
+query vs relevant (multi-head attention) chunk:   0.6044
+query vs irrelevant (BERT masking) chunk:          0.5864
+margin (higher is better discrimination):          0.0180
+
+=== 2026-08-19T18:40:06 ===
+model: BAAI/bge-base-en-v1.5
+
+load time: 7.05s
+RSS before load: 435 MB
+RSS after load:  461 MB  (+26 MB)
+
+embedding 135 real chunks...
+embed time: 101.43s (751.4 ms/chunk)
+embedding dimension: 768/contex
+RSS after embedding all chunks: 536 MB (+75 MB over model load)
+
+query vs relevant (multi-head attention) chunk:   0.6044
+query vs irrelevant (BERT masking) chunk:          0.5864
+margin (higher is better discrimination):          0.0180
+
