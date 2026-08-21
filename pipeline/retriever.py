@@ -77,3 +77,19 @@ def retrieve(query: str, paper_ids: list[str], top_k: int = 6, candidate_k: int 
             citations=_citations_for(text, paper_id, ref_map_cache),
         ))
     return results
+
+
+def retrieve_cross_paper(
+    query: str, paper_ids: list[str], top_k_per_paper: int = 3, candidate_k: int = 20
+) -> dict[str, list[RetrievedChunk]]:
+    """Per-paper scoped retrieval for cross-paper questions: runs retrieve()
+    once per paper (top_k_per_paper each), never a single global top-k over
+    the combined set — otherwise one paper with more/denser matching chunks
+    could crowd another paper out entirely. Every paper_id is always
+    included, even if it returns few/no strong matches for this particular
+    query (M8 decision: the user explicitly chose these papers, so nothing
+    gets silently dropped based on relevance)."""
+    return {
+        paper_id: retrieve(query, [paper_id], top_k=top_k_per_paper, candidate_k=candidate_k)
+        for paper_id in paper_ids
+    }
