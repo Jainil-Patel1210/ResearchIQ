@@ -103,8 +103,15 @@ def fetch_and_save_references(
     validation = validate_numbered_citations(full_text, references)
     ref_map = build_reference_map(references)
 
+    # Also grab the paper's own title (header endpoint is lightweight,
+    # same GROBID service, no extra service call) — M7 needs this to show
+    # "Attention Is All You Need, p.5" instead of "1706.03762v7, p.5".
+    header_xml = grobid_client.fetch_header_xml(pdf_path)
+    header = tei_parser.parse_header(header_xml)
+
     payload = {
         "paper_id": paper_id,
+        "title": header.title,
         "citation_style": validation.citation_style,
         "validation": asdict(validation),
         "references": {str(n): asdict(ref) for n, ref in ref_map.items()},
@@ -125,3 +132,15 @@ def load_paper_references(paper_id: str) -> tuple[dict[int, Reference], Citation
     ref_map = {int(n): Reference(**d) for n, d in payload["references"].items()}
     validation = CitationValidation(**payload["validation"])
     return ref_map, validation
+
+
+def load_paper_title(paper_id: str) -> str | None:
+    """Falls back to None (caller should then fall back to paper_id) for
+    papers indexed before this field was added — no need to re-run the
+    whole corpus just to backfill titles."""
+    try:
+        with open(REFERENCES_DIR / f"{paper_id}.json", encoding="utf-8") as f:
+            payload = json.load(f)
+    except FileNotFoundError:
+        return None
+    return payload.get("title")
